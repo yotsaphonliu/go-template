@@ -1,0 +1,55 @@
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      TZ: Asia/Bangkok
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: go-template
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.71.0
+    environment:
+      # enable OTLP (gRPC + HTTP) receivers in Jaeger
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686" # Jaeger UI
+      - "4318:4318" # OTLP/HTTP traces receiver
+      - "4317:4317" # OTLP/gRPC traces receiver (optional)
+
+#  vault:
+#    image: hashicorp/vault:1.16
+#    container_name: vault
+#    ports:
+#      - "8200:8200"
+#    environment:
+#      VAULT_UI: "true" # ui: http://localhost:8200/
+#      # These two are actually passed via CLI, but it’s OK to duplicate:
+#      VAULT_DEV_ROOT_TOKEN_ID: root
+#      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+#    cap_add:
+#      - IPC_LOCK
+#    volumes:
+#      - ./tools/init_vault.sh:/vault-init.sh:ro
+#    entrypoint: ["/vault-init.sh"]
+
+volumes:
+  minio-data:
+  pgdata:

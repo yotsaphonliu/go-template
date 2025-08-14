@@ -1,0 +1,53 @@
+Log:
+  Level: debug
+  Color: true
+  JSON: false
+
+# LOCAL
+Database:
+  Type: 'postgres'
+  PostgreSQL:
+    Host: 'localhost'
+    Port: '5432'
+    Username: 'postgres'
+    Password: 'postgres'
+    DBName: 'template-db'
+    MaxOpenConns: 30
+    SSLMode: 'disable'
+
+Minio:
+  EndpointUrl: 'localhost:9000'
+  User: 'obs-user'
+  Password: 'obs-password'
+  BucketName: 'obs-bucket-name'
+  UseSSL: false
+  DocumentExpireTime: '10'
+
+API:
+  HTTPServerPort: '9092'
+  ServiceBaseUrl: 'service_base_url'
+
+Admin:
+  Username: 'admin'
+  Password: 'P@ssw0rd'
+  Email: 'root@mail.com'
+
+# example:
+# - hashicorp:secret/data/myapp/config:username
+# - hashicorp:secret/data/myapp/config:password_b64:decodeBase64
+
+#HashiCorp:
+#  URL: 'http://127.0.0.1:8200'
+#  TokenMethod:
+#    Token: 'root'
+#  UserPassMethod:
+#    User: 'user'
+#    Password: 'password'
+#  AppRoleMethod:
+#    Path: 'approle'
+#    RoleID: 'role-id'
+#    SecretID: 'secret-id'
+#  AuthMethod: 'token'  # Possible values: 'token', 'user_password', 'app_role'
+#
+#Puppeteer:
+#  URL: 'http://127.0.0.1:4000'
